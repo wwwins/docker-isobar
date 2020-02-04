@@ -1,7 +1,7 @@
 #
 # Copyright 2019 isobar. All Rights Reserved.
 #
-# The isobar node image
+# The isobar node image(From alpine:3.10)
 #
 # Usage:
 #       dk build -t isobar/node-8:1.0.0 -f Dockerfile .
@@ -9,7 +9,7 @@
 FROM node:8-alpine
 LABEL maintainer "jacky.huang@isobar.com"
 
-RUN apk --no-cache add curl git openssl
+RUN apk --no-cache add curl git openssl libpng librsvg libgsf giflib libjpeg-turbo musl
 
 # Define default command.
 CMD ["curl", "-V"]
