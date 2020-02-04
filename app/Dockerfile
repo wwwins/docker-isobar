@@ -6,7 +6,7 @@
 # Usage:
 #       dk build -t isobar/app:1.0.0 -f Dockerfile .
 #
-FROM isobar/node-8:1.1.0
+FROM isobar/node:canvas
 LABEL maintainer "jacky.huang@isobar.com"
 
 WORKDIR /home/app
@@ -18,4 +18,5 @@ RUN npm install
 {INSTALL_NODE_CANVAS}
 
 # Define default command.
-CMD ["npm", "start"]
+#CMD ["npm", "start"]
+CMD ["pm2-runtime", "start", "pm2.json"]
