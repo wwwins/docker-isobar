@@ -1,3 +1,16 @@
+#
+# Simple dockerignore file for nodejs
+#
+# |-- .dockerignore
+# |-- Makefile
+# |-- app
+#     |-- creds
+#     |-- modules
+#     |-- node_modules
+#     |-- public
+#     |-- src
+#     `-- views
+
 */.git
 */.gitignore
 */.DS_Store
