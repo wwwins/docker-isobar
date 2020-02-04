@@ -1,0 +1,17 @@
+*/.git
+*/.gitignore
+*/.DS_Store
+*/.dockerignore
+*/*.swp
+*/.*.swp
+*/LICENSE
+*/VERSION
+*/README.md
+*/Changelog.md
+*/Makefile
+*/docker-compose.yml
+*/docs
+*/Dockerfile
+*/Makefile
+*/package-lock.json
+*/node_modules
