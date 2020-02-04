@@ -1,0 +1,20 @@
+html
+  head
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet prefetch", href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/2.3.7/mini-default.min.css")
+  body
+    #login
+    h3 請使用 timesheet 帳號密碼
+    h3 登入 isobar chatbot
+    form(action="login" enctype="application/json" method="post")
+      label(for="name")
+        | email:
+        input(type="text", name="email")
+      p
+      label(for="pass") 
+        | pwd:
+        input(type="password", name="pass")
+      input(type='hidden', name='authorization_code', value=authorization_code)
+      input(type='hidden', name='redirect_uri', value=redirect_uri)
+      p.buttons
+        input(type="submit", value="送出")
