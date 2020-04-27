@@ -65,6 +65,6 @@ fi
 
 if [ $ACT = "update" ]; then
   echo "Update $APP"
-  docker exec $APP yarn install
+  $DOCKER exec $APP yarn install
 fi
 
