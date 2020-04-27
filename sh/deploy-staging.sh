@@ -10,7 +10,7 @@
 MOUNT=/mnt/sources
 IMAGE_TAG=12-gm-pm2
 ACT=checkout
-DOCKER=docker
+DOCKER="docker"
 
 usage()
 {
