@@ -44,6 +44,11 @@ fi
 PROJECT=$MOUNT/$APP
 GIT_PROJECT=$USER/$APP
 FILE=$PROJECT/.git
+CONF_PATH=$MOUNT/conf/$APP
+NPMRC=$CONF_PATH/.npmrc
+YARNRC=$CONF_PATH/.yarnrc
+DOTENV=$CONF_PATH/.env
+PM2CONF=$CONF_PATH/pm2.json
 
 # Update this repository
 if [ -d $FILE ]; then
@@ -53,14 +58,15 @@ if [ -d $FILE ]; then
   git pull
 else
   echo "Project does not exist"
-  git clone git@gitlab.isobar.com.tw:$GIT_PROJECT.git $PROJECT
+  git clone git@4gitlab.isobar.com.tw:$GIT_PROJECT.git $PROJECT
 fi
 
 if [ $ACT = "init" ]; then
   echo "Starting $APP"
   #docker run --rm -d --name app-staging -p 8000:8000 -v /home/ubuntu/Downloads/mnt/app-staging:/workspace isobartw/node:lts yarn install && node src/app.js
   #docker run --rm --name $APP -p 8000:8000 -v /home/ubuntu/Downloads/mnt/app-staging:/workspace isobar/node:12-alpine-pm2
-  $DOCKER run --rm --name $APP -p $PORT:8000 -v $PROJECT:/workspace isobartw/node:$IMAGE_TAG
+  #$DOCKER run --rm --name $APP -p $PORT:8000 -v $PROJECT:/workspace isobartw/node:$IMAGE_TAG
+  $DOCKER run --rm --name $APP -p $PORT:$PORT --env-file $DOTENV -v $PROJECT:/workspace -v $NPMRC:/workspace/.npmrc -v $YARNRC:/workspace/.yarnrc -v $PM2CONF:/workspace/pm2.json isobartw/node:$IMAGE_TAG
 fi
 
 if [ $ACT = "update" ]; then
