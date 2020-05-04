@@ -55,6 +55,8 @@ if [ -d $FILE ]; then
   echo "Project does exist"
   cd $PROJECT
   echo "Updating the project"
+  git stash
+  git stash drop
   git pull
 else
   echo "Project does not exist"
