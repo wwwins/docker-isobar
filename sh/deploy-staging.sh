@@ -7,7 +7,7 @@
 #
 
 
-MOUNT=/mnt/sources
+MOUNT=/mnt
 IMAGE_TAG=12-gm-pm2
 ACT=checkout
 DOCKER="docker"
@@ -41,14 +41,17 @@ then
    usage
 fi
 
-PROJECT=$MOUNT/$APP
+PROJECT=$MOUNT/sources/$APP
+APP_CONF_PATH=$MOUNT/conf/$APP
+GLOBAL_CONF_PATH=$MOUNT/conf/global
+UPLOAD=$MOUNT/uploads/$APP
+
 GIT_PROJECT=$USER/$APP
 FILE=$PROJECT/.git
-CONF_PATH=$MOUNT/conf/$APP
-NPMRC=$CONF_PATH/.npmrc
-YARNRC=$CONF_PATH/.yarnrc
-DOTENV=$CONF_PATH/.env
-PM2CONF=$CONF_PATH/pm2.json
+NPMRC=$GLOBAL_CONF_PATH/.npmrc
+YARNRC=$GLOBAL_CONF_PATH/.yarnrc
+DOTENV=$APP_CONF_PATH/.env
+PM2CONF=$APP_CONF_PATH/pm2.json
 
 # Update this repository
 if [ -d $FILE ]; then
@@ -68,7 +71,7 @@ if [ $ACT = "init" ]; then
   #docker run --rm -d --name app-staging -p 8000:8000 -v /home/ubuntu/Downloads/mnt/app-staging:/workspace isobartw/node:lts yarn install && node src/app.js
   #docker run --rm --name $APP -p 8000:8000 -v /home/ubuntu/Downloads/mnt/app-staging:/workspace isobar/node:12-alpine-pm2
   #$DOCKER run --rm --name $APP -p $PORT:8000 -v $PROJECT:/workspace isobartw/node:$IMAGE_TAG
-  $DOCKER run --rm --name $APP -p $PORT:$PORT --env-file $DOTENV -v $PROJECT:/workspace -v $NPMRC:/workspace/.npmrc -v $YARNRC:/workspace/.yarnrc -v $PM2CONF:/workspace/pm2.json isobartw/node:$IMAGE_TAG
+  $DOCKER run --rm --name $APP -p $PORT:$PORT --env-file $DOTENV -v $PROJECT:/workspace -v $UPLOAD:/workspace/upload -v $NPMRC:/workspace/.npmrc -v $YARNRC:/workspace/.yarnrc -v $PM2CONF:/workspace/pm2.json isobartw/node:$IMAGE_TAG
 fi
 
 if [ $ACT = "update" ]; then
