@@ -53,6 +53,9 @@ YARNRC=$GLOBAL_CONF_PATH/.yarnrc
 DOTENV=$APP_CONF_PATH/.env
 PM2CONF=$APP_CONF_PATH/pm2.json
 
+[ -d $DOTENV ] || { echo "First-time setup of ${DOTENV}"; exit 1; }
+[ -d $PM2CONF ] || { echo "First-time setup of ${PM2.JOSN}"; exit 1; }
+
 # Update this repository
 if [ -d $FILE ]; then
   echo "Project does exist"
