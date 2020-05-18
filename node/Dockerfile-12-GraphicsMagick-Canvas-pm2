@@ -1,0 +1,27 @@
+#
+# Copyright 2020 isobar. All Rights Reserved.
+#
+# The isobar node image(From alpine:3.10)
+#
+# *** Need link the canvas package ***
+# "scripts": {
+#   "preinstall": "yarn link canvas"
+# }
+#
+# Usage:
+#       dk build -t isobar/node:12-alpine-gm -f Dockerfile .
+#
+FROM isobartw/node:12-alpine-gm-pm2
+LABEL maintainer "jacky.huang@isobar.com"
+
+WORKDIR /workspace
+
+# add node-canvas
+RUN apk add --no-cache pixman cairo pango giflib && \
+      apk add --no-cache --virtual .build-deps-full make gcc g++ python pkgconfig pixman-dev cairo-dev pango-dev libjpeg-turbo-dev giflib-dev && \
+      npm install canvas -g --unsafe-perm && \
+      apk del .build-deps-full && \
+      cd /usr/local/lib/node_modules/canvas; yarn link;
+
+# Define default command.
+#CMD ["pm2-runtime", "-V"]
