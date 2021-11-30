@@ -22,6 +22,7 @@
 # 	make app-run
 # 	make app-mongo-run
 #
+DK = docker
 DOCKER = sudo docker
 MKDIR = sudo mkdir -p
 CP = sudo cp
@@ -59,7 +60,10 @@ APP_DIR = app-dev
 
 # Tag
 NODE_8_TAG = 1.3.0
-NODE_12_TAG = 1.0.0
+#NODE_12_TAG = 1.0.0
+#NODE_12_TAG = 12-alpine-gm
+#NODE_12_TAG = 12-alpine-gm-pm2
+NODE_12_TAG = 12-alpine
 NODE_CANVAS_TAG = 1.1.0
 PYTHON_TAG = 1.3.0
 #APP_TAG = 1.11.0
@@ -112,6 +116,32 @@ gcr-stress-push:
 		@echo "Push a stable docker image to google container registry"
 		$(DOCKER) -- push $(GCR_IMAGE_NAME_STRESS):$(STRESS_TAG)
 
+isobartw-tags:
+		@echo
+		@echo "Create tags for isobartw"
+		$(DK) tag isobar/node:12-alpine 				isobartw/node:12-alpine
+		$(DK) tag isobar/node:12-alpine 				isobartw/node:12
+		$(DK) tag isobar/node:12-alpine 				isobartw/node:lts
+		$(DK) tag isobar/node:12-alpine-pm2 		isobartw/node:12-alpine-pm2
+		$(DK) tag isobar/node:12-alpine-pm2 		isobartw/node:12-pm2
+		$(DK) tag isobar/node:12-alpine-gm 			isobartw/node:12-alpine-gm
+		$(DK) tag isobar/node:12-alpine-gm 			isobartw/node:12-gm
+		$(DK) tag isobar/node:12-alpine-gm-pm2 	isobartw/node:12-alpine-gm-pm2
+		$(DK) tag isobar/node:12-alpine-gm-pm2 	isobartw/node:12-gm-pm2
+
+isobartw-push:
+		@echo
+		@echo "Push docker images to docker hub registry"
+		$(DK) push isobartw/node:12-alpine
+		$(DK) push isobartw/node:12
+		$(DK) push isobartw/node:lts
+		$(DK) push isobartw/node:12-alpine-pm2
+		$(DK) push isobartw/node:12-pm2
+		$(DK) push isobartw/node:12-alpine-gm
+		$(DK) push isobartw/node:12-gm
+		$(DK) push isobartw/node:12-alpine-gm-pm2
+		$(DK) push isobartw/node:12-gm-pm2
+
 node-build:
 		@echo
 		@echo "Build a node-8:$(NODE_8_TAG) image"
@@ -120,12 +150,23 @@ node-build:
 node12-build:
 		@echo
 		@echo "Build a node-12:$(NODE_12_TAG) image"
-		$(DOCKER) build -t isobar/node-12:$(NODE_12_TAG) -f node/Dockerfile .
+		#$(DOCKER) build -t isobar/node-12:$(NODE_12_TAG) -f node/Dockerfile .
+		$(DOCKER) build -t isobar/node:$(NODE_12_TAG) -f node/Dockerfile .
+		#$(DOCKER) build -t isobar/node:$(NODE_12_TAG) -f node/Dockerfile-12-GraphicsMagick-pm2 .
 
 node-canvas-build:
 		@echo
 		@echo "Build a node-canvas:$(NODE_CANVAS_TAG) image"
 		$(DOCKER) build -t isobar/node-canvas:$(NODE_CANVAS_TAG) -f node-canvas/Dockerfile .
+
+isobar-node-build:
+		@echo
+		@echo "Build a isobar node image"
+		$(DOCKER) build -t isobar/node:12-alpine -f node/Dockerfile-12 .
+		$(DOCKER) build -t isobar/node:12-alpine-pm2 -f node/Dockerfile-12-pm2 .
+		$(DOCKER) build -t isobar/node:12-alpine-gm -f node/Dockerfile-12-GraphicsMagicks .
+		$(DOCKER) build -t isobar/node:12-alpine-gm-pm2 -f node/Dockerfile-12-GraphicsMagicks-pm2 .
+
 python-build:
 		@echo
 		@echo "Build a python-3.5:$(PYTHON_TAG) image"
@@ -231,6 +272,11 @@ c1:
 		@echo "1 concurrency 1000 requests"
 		$(AB) -c 1 -n 1000 $(HOST)
 
+staging:
+		@echo
+		@echo "Deploy to staging"
+		@sh/deploy-staging.sh fastify-app Jhuang05
+		
 app-run:
 		@echo
 		@echo "Start an app:$(APP_TAG) image"
@@ -241,5 +287,5 @@ app-mongo-run:
 		@echo "Running a mongo server"
 		@echo "cd ~/github/docker-2019ncku; make run-mongo"
 		@echo "Start an app:$(APP_TAG) image"
-		$(DOCKER) $(RUN) --name app -p 8000:8000 -e MONGO_URI="mongodb://xx:xxxxxx@mongo:27017/Sinopac_2019ncku" -e URL="http://10.65.16.237:8000" --network mongo-network isobar/app:$(APP_TAG) pm2-runtime start src/app.js -i 2
+		$(DOCKER) $(RUN) --name app -p 8000:8000 -e MONGO_URI="mongodb://jp:wwwins@mongo:27017/Sinopac_2019ncku" -e URL="http://10.65.16.237:8000" --network mongo-network isobar/app:$(APP_TAG) pm2-runtime start src/app.js -i 2
 
