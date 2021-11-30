@@ -11,6 +11,13 @@
 # 	make node-build
 # node12:
 # 	make node12-build
+# isobar node12:
+# 	make isobar-node-build
+# isobar node12 update:
+# 	docker login(First)
+# 	make isobar-node-update
+# 	make isobar-node-tag
+# 	make isobar-node-push
 #
 # ab benchmark:
 # 	make c1
@@ -25,6 +32,7 @@
 DK = docker
 DOCKER = sudo docker
 MKDIR = sudo mkdir -p
+TOUCH = sudo touch
 CP = sudo cp
 SED = sed -e
 AB = ab
@@ -62,12 +70,19 @@ APP_DIR = app-dev
 NODE_8_TAG = 1.3.0
 #NODE_12_TAG = 1.0.0
 #NODE_12_TAG = 12-alpine-gm
-#NODE_12_TAG = 12-alpine-gm-pm2
-NODE_12_TAG = 12-alpine
+NODE_12_TAG = 12-alpine-gm-pm2
+#NODE_12_TAG = 12-alpine
+#NODE_FFMPEG_TAG = 12-alpine-ffmpeg
+NODE_FFMPEG_TAG = 12-alpine-gm-ffmpeg-pm2
+#NODE_FFMPEG_TAG = 12-alpine-gm-ffmpeg
+NODE_12_CANVAS_TAG = 12-alpine-gm-canvas-pm2
 NODE_CANVAS_TAG = 1.1.0
 PYTHON_TAG = 1.3.0
+PYZBAR_TAG = zbar
+FFMPEG_TAG = 4.2-ubuntu
 #APP_TAG = 1.11.0
 APP_TAG = 2.3.0
+HLS_TAG = 1.1.0
 NFS_TAG = 1.0.0
 DEV_TAG = 1.2.0
 STRESS_TAG = 1.0.0
@@ -81,8 +96,10 @@ BUILD_NODE_CANVAS = RUN apk add --no-cache --virtual .build-deps-full make gcc g
 default: app-canvas-build
 
 app-push: gcr-tag gcr-push
+hls-build-push: hls-build hls-tag hls-push
 nfs-push: gcr-nfs-tag gcr-nfs-push
 stress-push: gcr-stress-tag gcr-stress-push
+isobar-node-update: isobar-node-clean isobar-node-build isobartw-tag isobartw-push
 
 rm: rmc rmi
 
@@ -116,18 +133,28 @@ gcr-stress-push:
 		@echo "Push a stable docker image to google container registry"
 		$(DOCKER) -- push $(GCR_IMAGE_NAME_STRESS):$(STRESS_TAG)
 
+hls-tag:
+	@echo
+	@echo "Create a tag for registry.isobar.com.tw"
+	$(DOCKER) tag isobar/hls-service:$(HLS_TAG) registry.isobar.com.tw/project/amway/hls-service:$(HLS_TAG)
+
+hls-push:
+	@echo
+	@echo "Push a image to registry.isobar.com.tw"
+	$(DOCKER) push registry.isobar.com.tw/project/amway/hls-service
+
 isobartw-tags:
 		@echo
 		@echo "Create tags for isobartw"
-		$(DK) tag isobar/node:12-alpine 				isobartw/node:12-alpine
-		$(DK) tag isobar/node:12-alpine 				isobartw/node:12
-		$(DK) tag isobar/node:12-alpine 				isobartw/node:lts
-		$(DK) tag isobar/node:12-alpine-pm2 		isobartw/node:12-alpine-pm2
-		$(DK) tag isobar/node:12-alpine-pm2 		isobartw/node:12-pm2
-		$(DK) tag isobar/node:12-alpine-gm 			isobartw/node:12-alpine-gm
-		$(DK) tag isobar/node:12-alpine-gm 			isobartw/node:12-gm
-		$(DK) tag isobar/node:12-alpine-gm-pm2 	isobartw/node:12-alpine-gm-pm2
-		$(DK) tag isobar/node:12-alpine-gm-pm2 	isobartw/node:12-gm-pm2
+		$(DK) tag isobar/node:12-alpine 								isobartw/node:12-alpine
+		$(DK) tag isobar/node:12-alpine 								isobartw/node:12
+		$(DK) tag isobar/node:12-alpine 								isobartw/node:lts
+		$(DK) tag isobar/node:12-alpine-pm2 						isobartw/node:12-alpine-pm2
+		$(DK) tag isobar/node:12-alpine-pm2 						isobartw/node:12-pm2
+		$(DK) tag isobar/node:12-alpine-gm 							isobartw/node:12-alpine-gm
+		$(DK) tag isobar/node:12-alpine-gm 							isobartw/node:12-gm
+		$(DK) tag isobar/node:12-alpine-gm-pm2 					isobartw/node:12-alpine-gm-pm2
+		$(DK) tag isobar/node:12-alpine-gm-pm2 					isobartw/node:12-gm-pm2
 
 isobartw-push:
 		@echo
@@ -141,6 +168,79 @@ isobartw-push:
 		$(DK) push isobartw/node:12-gm
 		$(DK) push isobartw/node:12-alpine-gm-pm2
 		$(DK) push isobartw/node:12-gm-pm2
+		@echo
+		@echo "Update all tagged images on the gitlab-runner"
+		@echo "docker pull -a isobartw/node"
+
+isobartw-node-tags:
+		@echo
+		@echo "Create tags for isobartw"
+		$(DK) tag isobar/node:12-alpine 								isobartw/node:12-alpine
+		$(DK) tag isobar/node:12-alpine 								isobartw/node:12
+		$(DK) tag isobar/node:12-alpine 								isobartw/node:lts
+		$(DK) tag isobar/node:12-alpine-pm2 						isobartw/node:12-alpine-pm2
+		$(DK) tag isobar/node:12-alpine-pm2 						isobartw/node:12-pm2
+		$(DK) tag isobar/node:12-alpine-gm 							isobartw/node:12-alpine-gm
+		$(DK) tag isobar/node:12-alpine-gm 							isobartw/node:12-gm
+		$(DK) tag isobar/node:12-alpine-gm-pm2 					isobartw/node:12-alpine-gm-pm2
+		$(DK) tag isobar/node:12-alpine-gm-pm2 					isobartw/node:12-gm-pm2
+		@echo "Added canvas tags"
+		$(DK) tag isobar/node:12-alpine-gm-canvas				isobartw/node:12-alpine-gm-canvas
+		$(DK) tag isobar/node:12-alpine-gm-canvas-pm2 	isobartw/node:12-alpine-gm-canvas-pm2
+		$(DK) tag isobar/node:12-alpine-gm-canvas				isobartw/node:12-gm-canvas
+		$(DK) tag isobar/node:12-alpine-gm-canvas-pm2 	isobartw/node:12-gm-canvas-pm2
+		@echo "Added ffmpeg tags"
+		$(DK) tag isobar/node:12-alpine-ffmpeg					isobartw/node:12-alpine-ffmpeg
+		$(DK) tag isobar/node:12-alpine-ffmpeg					isobartw/node:12-ffmpeg
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg 			isobartw/node:12-alpine-gm-ffmpeg
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg 			isobartw/node:12-gm-ffmpeg
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-pm2		isobartw/node:12-alpine-gm-ffmpeg-pm2
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-pm2		isobartw/node:12-gm-ffmpeg-pm2
+
+isobartw-node-push:
+		@echo
+		@echo "Push docker images to docker hub registry"
+		$(DK) push isobartw/node:12-alpine
+		$(DK) push isobartw/node:12
+		$(DK) push isobartw/node:lts
+		$(DK) push isobartw/node:12-alpine-pm2
+		$(DK) push isobartw/node:12-pm2
+		$(DK) push isobartw/node:12-alpine-gm
+		$(DK) push isobartw/node:12-gm
+		$(DK) push isobartw/node:12-alpine-gm-pm2
+		$(DK) push isobartw/node:12-gm-pm2
+		@echo "Push canvas tags"
+		$(DK) push isobartw/node:12-alpine-gm-canvas
+		$(DK) push isobartw/node:12-alpine-gm-canvas-pm2
+		$(DK) push isobartw/node:12-gm-canvas
+		$(DK) push isobartw/node:12-gm-canvas-pm2
+		@echo "Push ffmpeg tags"
+		$(DK) push isobartw/node:12-alpine-ffmpeg
+		$(DK) push isobartw/node:12-ffmpeg
+		$(DK) push isobartw/node:12-alpine-gm-ffmpeg
+		$(DK) push isobartw/node:12-gm-ffmpeg
+		$(DK) push isobartw/node:12-alpine-gm-ffmpeg-pm2
+		$(DK) push isobartw/node:12-gm-ffmpeg-pm2
+
+isobartw-zbar-tags:
+		@echo
+		@echo "Create tags for isobartw"
+		$(DK) tag isobar/python:zbar isobartw/python:zbar
+
+isobartw-zbar-push:
+		@echo
+		@echo "Push docker images to docker hub registry"
+		$(DK) push isobartw/python:zbar
+
+isobartw-ffmpeg-tags:
+		@echo
+		@echo "Create tags for isobartw"
+		$(DK) tag isobar/ffmpeg:$(FFMPEG_TAG) isobartw/ffmpeg:$(FFMPEG_TAG)
+
+isobartw-ffmpeg-push:
+		@echo
+		@echo "Push docker images to docker hub registry"
+		$(DK) push isobartw/ffmpeg:$(FFMPEG_TAG)
 
 node-build:
 		@echo
@@ -151,26 +251,66 @@ node12-build:
 		@echo
 		@echo "Build a node-12:$(NODE_12_TAG) image"
 		#$(DOCKER) build -t isobar/node-12:$(NODE_12_TAG) -f node/Dockerfile .
-		$(DOCKER) build -t isobar/node:$(NODE_12_TAG) -f node/Dockerfile .
-		#$(DOCKER) build -t isobar/node:$(NODE_12_TAG) -f node/Dockerfile-12-GraphicsMagick-pm2 .
+		#$(DOCKER) build -t isobar/node:$(NODE_12_TAG) -f node/Dockerfile .
+		$(DOCKER) build -t isobar/node:$(NODE_12_TAG) -f node/Dockerfile-12-GraphicsMagick-pm2 .
+
+node12-ffmpeg-build:
+		@echo
+		@echo "Build a node-12:$(NODE_FFMPEG_TAG) with ffmpeg image"
+		#$(DOCKER) build -t isobar/node:$(NODE_FFMPEG_TAG) -f node/Dockerfile-12-ffmpeg .
+		#$(DOCKER) build -t isobar/node:$(NODE_FFMPEG_TAG) -f node/Dockerfile-12-GraphicsMagick-ffmpeg .
+		$(DOCKER) build -t isobar/node:$(NODE_FFMPEG_TAG) -f node/Dockerfile-12-GraphicsMagick-ffmpeg-pm2 .
+
+node12-canvas-build:
+		@echo
+		@echo "Build a node-12:${NODE_12_CANVAS_TAG} imgage"
+		#$(DOCKER) build -t isobar/node:$(NODE_12_CANVAS_TAG) -f node/Dockerfile-12-GraphicsMagick-Canvas .
+		$(DOCKER) build -t isobar/node:$(NODE_12_CANVAS_TAG) -f node/Dockerfile-12-GraphicsMagick-Canvas-pm2 .
+		
 
 node-canvas-build:
 		@echo
 		@echo "Build a node-canvas:$(NODE_CANVAS_TAG) image"
 		$(DOCKER) build -t isobar/node-canvas:$(NODE_CANVAS_TAG) -f node-canvas/Dockerfile .
 
+isobar-node-clean:
+		@echo
+		#echo "Make clean node images"
+		$(DOCKER) rmi node:12-alpine
+
 isobar-node-build:
 		@echo
-		@echo "Build a isobar node image"
+		@echo "Build a isobar node images"
 		$(DOCKER) build -t isobar/node:12-alpine -f node/Dockerfile-12 .
 		$(DOCKER) build -t isobar/node:12-alpine-pm2 -f node/Dockerfile-12-pm2 .
-		$(DOCKER) build -t isobar/node:12-alpine-gm -f node/Dockerfile-12-GraphicsMagicks .
-		$(DOCKER) build -t isobar/node:12-alpine-gm-pm2 -f node/Dockerfile-12-GraphicsMagicks-pm2 .
+		$(DOCKER) build -t isobar/node:12-alpine-gm -f node/Dockerfile-12-GraphicsMagick .
+		$(DOCKER) build -t isobar/node:12-alpine-gm-pm2 -f node/Dockerfile-12-GraphicsMagick-pm2 .
 
 python-build:
 		@echo
 		@echo "Build a python-3.5:$(PYTHON_TAG) image"
 		$(DOCKER) build -t isobar/python-3.5:$(PYTHON_TAG) -f python/Dockerfile .
+
+pyzbar-build:
+		@echo
+		@echo "Build a python-3.7:$(PYZBAR_TAG) image"
+		$(DOCKER) build -t isobar/python:$(PYZBAR_TAG) -f python/Dockerfile-pyzbar .
+		
+ffmpeg-build:
+		@echo
+		@echo "Build a ffmpeg:$(FFMPEG_TAG) image"
+		$(DOCKER) build -t isobar/ffmpeg:$(FFMPEG_TAG) -f ffmpeg/Dockerfile .
+
+hls-build:
+		@echo
+		@echo "Build a hls:$(HLS_TAG) image"
+		$(MKDIR) hls-service/upload
+		$(MKDIR) hls-service/output
+		$(MKDIR) hls-service/backup
+		$(MKDIR) hls-service/logs
+		$(MKDIR) hls-service/assets
+		$(TOUCH) hls-service/assets/pic.jpg
+		$(DOCKER) build -t isobar/hls-service:$(HLS_TAG) -f hls-service-dockerfile/Dockerfile .
 
 app-build: BUILD_NODE_CANVAS:=
 app-build:
