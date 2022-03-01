@@ -1,0 +1,15 @@
+#
+# Copyright 2022 isobar. All Rights Reserved.
+#
+# The isobar node image with ffmpeg(From jrottenberg/ffmpeg:4.1-alpine)
+#
+
+FROM jrottenberg/ffmpeg:4.1-alpine AS ffmpeg
+FROM isobar/node:12-alpine-gm-pm2
+
+LABEL maintainer "jacky.huang@isobar.com"
+WORKDIR /workspace
+
+ENV LD_LIBRARY_PATH=/usr/local/lib
+COPY --from=ffmpeg /usr /usr/
+
