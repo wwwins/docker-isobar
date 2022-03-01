@@ -1,5 +1,5 @@
 #
-# Copyright 2019-2020 isobar. All Rights Reserved.
+# Copyright 2019-2022 isobar. All Rights Reserved.
 #
 # without canvas:
 # 	make app-build
@@ -16,8 +16,6 @@
 # isobar node12 update:
 # 	docker login(First)
 # 	make isobar-node-update
-# 	make isobar-node-tag
-# 	make isobar-node-push
 #
 # ab benchmark:
 # 	make c1
@@ -56,8 +54,8 @@ HOST_NAME = http://4ichatbot.isobar.com.tw/
 #API = jpg/00AAAA/app-1.11.0-from-ab-中文
 API = png/00AAAA/app-1.11.0-from-ab-中文
 #API = png/00AAAA/app-py-1.3.0-from-ab-中文
-#API = mongo/updateAndFind/myCollection
 #API = mongo/loop/myCollection/10
+#API = mongo/updateAndFind/myCollection
 
 HOST = $(HOST_NAME)$(API)
 
@@ -99,7 +97,7 @@ app-push: gcr-tag gcr-push
 hls-build-push: hls-build hls-tag hls-push
 nfs-push: gcr-nfs-tag gcr-nfs-push
 stress-push: gcr-stress-tag gcr-stress-push
-isobar-node-update: isobar-node-clean isobar-node-build isobartw-tag isobartw-push
+isobar-node-update: isobar-node-clean isobar-node-build isobartw-tags isobartw-push
 
 rm: rmc rmi
 
@@ -122,7 +120,7 @@ gcr-nfs-push:
 		@echo
 		@echo "Push a stable docker image to google container registry"
 		$(DOCKER) -- push $(GCR_IMAGE_NAME_NFS):$(NFS_TAG)
-		
+
 gcr-stress-tag:
 		@echo
 		@echo "Create a tag for gcr.io"
@@ -134,14 +132,14 @@ gcr-stress-push:
 		$(DOCKER) -- push $(GCR_IMAGE_NAME_STRESS):$(STRESS_TAG)
 
 hls-tag:
-	@echo
-	@echo "Create a tag for registry.isobar.com.tw"
-	$(DOCKER) tag isobar/hls-service:$(HLS_TAG) registry.isobar.com.tw/project/amway/hls-service:$(HLS_TAG)
+		@echo
+		@echo "Create a tag for registry.isobar.com.tw"
+		$(DOCKER) tag isobar/hls-service:$(HLS_TAG) registry.isobar.com.tw/project/amway/hls-service:$(HLS_TAG)
 
 hls-push:
-	@echo
-	@echo "Push a image to registry.isobar.com.tw"
-	$(DOCKER) push registry.isobar.com.tw/project/amway/hls-service
+		@echo
+		@echo "Push a image to registry.isobar.com.tw"
+		$(DOCKER) push registry.isobar.com.tw/project/amway/hls-service
 
 isobartw-tags:
 		@echo
@@ -155,6 +153,12 @@ isobartw-tags:
 		$(DK) tag isobar/node:12-alpine-gm 							isobartw/node:12-gm
 		$(DK) tag isobar/node:12-alpine-gm-pm2 					isobartw/node:12-alpine-gm-pm2
 		$(DK) tag isobar/node:12-alpine-gm-pm2 					isobartw/node:12-gm-pm2
+		$(DK) tag isobar/node:12-alpine-ffmpeg 					isobartw/node:12-alpine-ffmpeg
+		$(DK) tag isobar/node:12-alpine-ffmpeg 					isobartw/node:12-ffmpeg
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg 			isobartw/node:12-alpine-gm-ffmpeg
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg 			isobartw/node:12-gm-ffmpeg
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-pm2 	isobartw/node:12-alpine-gm-ffmpeg-pm2
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-pm2 	isobartw/node:12-gm-ffmpeg-pm2
 
 isobartw-push:
 		@echo
@@ -168,6 +172,12 @@ isobartw-push:
 		$(DK) push isobartw/node:12-gm
 		$(DK) push isobartw/node:12-alpine-gm-pm2
 		$(DK) push isobartw/node:12-gm-pm2
+		$(DK) push isobartw/node:12-alpine-ffmpeg
+		$(DK) push isobartw/node:12-ffmpeg
+		$(DK) push isobartw/node:12-alpine-gm-ffmpeg
+		$(DK) push isobartw/node:12-gm-ffmpeg
+		$(DK) push isobartw/node:12-alpine-gm-ffmpeg-pm2
+		$(DK) push isobartw/node:12-gm-ffmpeg-pm2
 		@echo
 		@echo "Update all tagged images on the gitlab-runner"
 		@echo "docker pull -a isobartw/node"
@@ -266,7 +276,7 @@ node12-canvas-build:
 		@echo "Build a node-12:${NODE_12_CANVAS_TAG} imgage"
 		#$(DOCKER) build -t isobar/node:$(NODE_12_CANVAS_TAG) -f node/Dockerfile-12-GraphicsMagick-Canvas .
 		$(DOCKER) build -t isobar/node:$(NODE_12_CANVAS_TAG) -f node/Dockerfile-12-GraphicsMagick-Canvas-pm2 .
-		
+
 
 node-canvas-build:
 		@echo
@@ -285,6 +295,9 @@ isobar-node-build:
 		$(DOCKER) build -t isobar/node:12-alpine-pm2 -f node/Dockerfile-12-pm2 .
 		$(DOCKER) build -t isobar/node:12-alpine-gm -f node/Dockerfile-12-GraphicsMagick .
 		$(DOCKER) build -t isobar/node:12-alpine-gm-pm2 -f node/Dockerfile-12-GraphicsMagick-pm2 .
+		$(DOCKER) build -t isobar/node:12-alpine-ffmpeg -f node/Dockerfile-12-ffmpeg .
+		$(DOCKER) build -t isobar/node:12-alpine-gm-ffmpeg -f node/Dockerfile-12-GraphicsMagick-ffmpeg .
+		$(DOCKER) build -t isobar/node:12-alpine-gm-ffmpeg-pm2 -f node/Dockerfile-12-GraphicsMagick-ffmpeg-pm2 .
 
 python-build:
 		@echo
@@ -295,7 +308,7 @@ pyzbar-build:
 		@echo
 		@echo "Build a python-3.7:$(PYZBAR_TAG) image"
 		$(DOCKER) build -t isobar/python:$(PYZBAR_TAG) -f python/Dockerfile-pyzbar .
-		
+
 ffmpeg-build:
 		@echo
 		@echo "Build a ffmpeg:$(FFMPEG_TAG) image"
@@ -334,7 +347,7 @@ stress-build:
 		@echo
 		@echo "Build a stress:$(STRESS_TAG) image"
 		$(DOCKER) build -t isobar/stress:$(STRESS_TAG) -f stress/Dockerfile .
-		
+
 dev-build:
 		@echo
 		@echo "Build a app:$(DEV_TAG) image"
@@ -360,7 +373,7 @@ cpu:
 		@echo
 		@echo "Stressing CPU"
 		$(DOCKER) $(RUN) isobar/stress:$(STRESS_TAG) --cpu 4 --timeout 60s
-		
+
 vm:
 		@echo
 		@echo "Stressing VM"
@@ -416,7 +429,7 @@ staging:
 		@echo
 		@echo "Deploy to staging"
 		@sh/deploy-staging.sh fastify-app Jhuang05
-		
+
 app-run:
 		@echo
 		@echo "Start an app:$(APP_TAG) image"
