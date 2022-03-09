@@ -144,21 +144,25 @@ hls-push:
 isobartw-tags:
 		@echo
 		@echo "Create tags for isobartw"
-		$(DK) tag isobar/node:12-alpine 								isobartw/node:12-alpine
-		$(DK) tag isobar/node:12-alpine 								isobartw/node:12
-		$(DK) tag isobar/node:12-alpine 								isobartw/node:lts
-		$(DK) tag isobar/node:12-alpine-pm2 						isobartw/node:12-alpine-pm2
-		$(DK) tag isobar/node:12-alpine-pm2 						isobartw/node:12-pm2
-		$(DK) tag isobar/node:12-alpine-gm 							isobartw/node:12-alpine-gm
-		$(DK) tag isobar/node:12-alpine-gm 							isobartw/node:12-gm
-		$(DK) tag isobar/node:12-alpine-gm-pm2 					isobartw/node:12-alpine-gm-pm2
-		$(DK) tag isobar/node:12-alpine-gm-pm2 					isobartw/node:12-gm-pm2
-		$(DK) tag isobar/node:12-alpine-ffmpeg 					isobartw/node:12-alpine-ffmpeg
-		$(DK) tag isobar/node:12-alpine-ffmpeg 					isobartw/node:12-ffmpeg
-		$(DK) tag isobar/node:12-alpine-gm-ffmpeg 			isobartw/node:12-alpine-gm-ffmpeg
-		$(DK) tag isobar/node:12-alpine-gm-ffmpeg 			isobartw/node:12-gm-ffmpeg
-		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-pm2 	isobartw/node:12-alpine-gm-ffmpeg-pm2
-		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-pm2 	isobartw/node:12-gm-ffmpeg-pm2
+		$(DK) tag isobar/node:12-alpine 									isobartw/node:12-alpine
+		$(DK) tag isobar/node:12-alpine 									isobartw/node:12
+		$(DK) tag isobar/node:12-alpine 									isobartw/node:lts
+		$(DK) tag isobar/node:12-alpine-pm2 							isobartw/node:12-alpine-pm2
+		$(DK) tag isobar/node:12-alpine-pm2 							isobartw/node:12-pm2
+		$(DK) tag isobar/node:12-alpine-gm 								isobartw/node:12-alpine-gm
+		$(DK) tag isobar/node:12-alpine-gm 								isobartw/node:12-gm
+		$(DK) tag isobar/node:12-alpine-gm-pm2 						isobartw/node:12-alpine-gm-pm2
+		$(DK) tag isobar/node:12-alpine-gm-pm2 						isobartw/node:12-gm-pm2
+		$(DK) tag isobar/node:12-alpine-ffmpeg 						isobartw/node:12-alpine-ffmpeg
+		$(DK) tag isobar/node:12-alpine-ffmpeg 						isobartw/node:12-ffmpeg
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg 				isobartw/node:12-alpine-gm-ffmpeg
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg 				isobartw/node:12-gm-ffmpeg
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-pm2 		isobartw/node:12-alpine-gm-ffmpeg-pm2
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-pm2 		isobartw/node:12-gm-ffmpeg-pm2
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-im			isobartw/node:12-alpine-gm-ffmpeg-im
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-im			isobartw/node:12-gm-ffmpeg-im
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-im-pm2	isobartw/node:12-alpine-gm-ffmpeg-im-pm2
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-im-pm2	isobartw/node:12-gm-ffmpeg-im-pm2
 
 isobartw-push:
 		@echo
@@ -178,6 +182,10 @@ isobartw-push:
 		$(DK) push isobartw/node:12-gm-ffmpeg
 		$(DK) push isobartw/node:12-alpine-gm-ffmpeg-pm2
 		$(DK) push isobartw/node:12-gm-ffmpeg-pm2
+		$(DK) push isobartw/node:12-alpine-gm-ffmpeg-im
+		$(DK) push isobartw/node:12-gm-ffmpeg-im
+		$(DK) push isobartw/node:12-alpine-gm-ffmpeg-im-pm2
+		$(DK) push isobartw/node:12-gm-ffmpeg-im-pm2
 		@echo
 		@echo "Update all tagged images on the gitlab-runner"
 		@echo "docker pull -a isobartw/node"
@@ -298,6 +306,8 @@ isobar-node-build:
 		$(DOCKER) build -t isobar/node:12-alpine-ffmpeg -f node/Dockerfile-12-ffmpeg .
 		$(DOCKER) build -t isobar/node:12-alpine-gm-ffmpeg -f node/Dockerfile-12-GraphicsMagick-ffmpeg .
 		$(DOCKER) build -t isobar/node:12-alpine-gm-ffmpeg-pm2 -f node/Dockerfile-12-GraphicsMagick-ffmpeg-pm2 .
+		$(DOCKER) build -t isobar/node:12-alpine-gm-ffmpeg-im -f node/Dockerfile-12-GraphicsMagick-ffmpeg-ImageMagick .
+		$(DOCKER) build -t isobar/node:12-alpine-gm-ffmpeg-im-pm2 -f node/Dockerfile-12-GraphicsMagick-ffmpeg-ImageMagick-pm2 .
 
 python-build:
 		@echo
