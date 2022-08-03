@@ -1,0 +1,16 @@
+#
+# Copyright 2022 isobar. All Rights Reserved.
+#
+# The isobar node image
+#
+
+FROM node:16-alpine
+LABEL maintainer "jacky.huang@isobar.com"
+
+WORKDIR /workspace
+
+# install dev tools
+RUN apk --no-cache add curl git openssl subversion
+
+# Define default command.
+CMD ["node", "-v"]

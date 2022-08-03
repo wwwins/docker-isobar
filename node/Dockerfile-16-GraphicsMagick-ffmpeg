@@ -1,0 +1,10 @@
+#
+# Copyright 2022 isobar. All Rights Reserved.
+#
+# The isobar node image with ffmpeg(tag: node-16-alpine-gm-ffmpeg)
+#
+
+FROM isobar/node:16-alpine-gm
+LABEL maintainer "jacky.huang@isobar.com"
+
+RUN apk --no-cache add ffmpeg
