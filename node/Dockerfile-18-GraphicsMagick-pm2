@@ -1,0 +1,23 @@
+#
+# Copyright 2019-2022 isobar. All Rights Reserved.
+#
+# The isobar node image for deployment
+#
+# Usage:
+#       dk build -t isobar/node:16-alpine-gm-pm2 -f Dockerfile .
+#
+FROM node:18-alpine
+LABEL maintainer "jacky.huang@isobar.com"
+
+WORKDIR /workspace
+
+# add graphicsmagick
+ENV GM_VER=1.3.34
+RUN apk --no-cache add curl git openssl subversion libpng libjpeg-turbo libgomp libltdl freetype musl graphicsmagick && \
+    npm install pm2 -g
+
+COPY ./sh/docker-yarn-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-yarn-entrypoint.sh"]
+
+# Define default command.
+CMD ["pm2-runtime", "start", "pm2.json"]
