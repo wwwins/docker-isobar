@@ -70,7 +70,7 @@ HOST = $(HOST_NAME)$(API)
 APP_DIR = app-dev
 
 # Tag
-NODE_TAG = 16
+NODE_TAG = 18
 NODE_8_TAG = 1.3.0
 #NODE_12_TAG = 1.0.0
 #NODE_12_TAG = 12-alpine-gm
