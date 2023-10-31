@@ -2,8 +2,8 @@
 set -e
 
 if [ "${1}" = "pm2-runtime" ]; then
-  echo "running yarn install"
-  yarn install
+  echo "running npm ci"
+  npm ci
 fi
 
 if [ "${1#-}" != "${1}" ] || [ -z "$(command -v "${1}")" ]; then
