@@ -1,0 +1,17 @@
+#
+# Copyright 2023 isobar. All Rights Reserved.
+#
+# The isobar node image
+#
+# Usage:
+#       dk build -t isobar/node:16-alpine-gm -f Dockerfile .
+#
+FROM node:20-alpine
+LABEL maintainer "jacky.huang@isobar.com"
+
+# add graphicsmagick
+ENV GM_VER=1.3.34
+RUN apk --no-cache add curl git openssl subversion libpng libjpeg-turbo libgomp libltdl freetype musl graphicsmagick
+
+# Define default command.
+#CMD ["pm2-runtime", "-V"]

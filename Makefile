@@ -70,7 +70,7 @@ HOST = $(HOST_NAME)$(API)
 APP_DIR = app-dev
 
 # Tag
-NODE_TAG = 18
+NODE_TAG = 20
 NODE_8_TAG = 1.3.0
 #NODE_12_TAG = 1.0.0
 #NODE_12_TAG = 12-alpine-gm
@@ -150,25 +150,25 @@ hls-push:
 isobartw-tags:
 		@echo
 		@echo "Create tags for isobartw/node:$(NODE_TAG)"
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine 									isobartw/node:$(NODE_TAG)-alpine
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine 									isobartw/node:$(NODE_TAG)
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine 									isobartw/node:lts
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-pm2 							isobartw/node:$(NODE_TAG)-alpine-pm2
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-pm2 							isobartw/node:$(NODE_TAG)-pm2
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm 								isobartw/node:$(NODE_TAG)-alpine-gm
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm 								isobartw/node:$(NODE_TAG)-gm
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-pm2 						isobartw/node:$(NODE_TAG)-alpine-gm-pm2
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-pm2 						isobartw/node:$(NODE_TAG)-gm-pm2
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-ffmpeg 						isobartw/node:$(NODE_TAG)-alpine-ffmpeg
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-ffmpeg 						isobartw/node:$(NODE_TAG)-ffmpeg
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg 				isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg 				isobartw/node:$(NODE_TAG)-gm-ffmpeg
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg-pm2 		isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg-pm2
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg-pm2 		isobartw/node:$(NODE_TAG)-gm-ffmpeg-pm2
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg-im			isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg-im
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg-im			isobartw/node:$(NODE_TAG)-gm-ffmpeg-im
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg-im-pm2	isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg-im-pm2
-		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg-im-pm2	isobartw/node:$(NODE_TAG)-gm-ffmpeg-im-pm2
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine                     isobartw/node:$(NODE_TAG)-alpine
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine                     isobartw/node:$(NODE_TAG)
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine                     isobartw/node:lts
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-pm2                 isobartw/node:$(NODE_TAG)-alpine-pm2
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-pm2                 isobartw/node:$(NODE_TAG)-pm2
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm                  isobartw/node:$(NODE_TAG)-alpine-gm
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm                  isobartw/node:$(NODE_TAG)-gm
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-pm2              isobartw/node:$(NODE_TAG)-alpine-gm-pm2
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-pm2              isobartw/node:$(NODE_TAG)-gm-pm2
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-ffmpeg              isobartw/node:$(NODE_TAG)-alpine-ffmpeg            || true
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-ffmpeg              isobartw/node:$(NODE_TAG)-ffmpeg                   || true
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg           isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg         || true
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg           isobartw/node:$(NODE_TAG)-gm-ffmpeg                || true
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg-pm2       isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg-pm2     || true
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg-pm2       isobartw/node:$(NODE_TAG)-gm-ffmpeg-pm2            || true
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg-im        isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg-im      || true
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg-im        isobartw/node:$(NODE_TAG)-gm-ffmpeg-im             || true
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg-im-pm2    isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg-im-pm2  || true
+		$(DK) tag isobar/node:$(NODE_TAG)-alpine-gm-ffmpeg-im-pm2    isobartw/node:$(NODE_TAG)-gm-ffmpeg-im-pm2         || true
 
 isobartw-push:
 		@echo
@@ -182,16 +182,16 @@ isobartw-push:
 		$(DK) push isobartw/node:$(NODE_TAG)-gm
 		$(DK) push isobartw/node:$(NODE_TAG)-alpine-gm-pm2
 		$(DK) push isobartw/node:$(NODE_TAG)-gm-pm2
-		$(DK) push isobartw/node:$(NODE_TAG)-alpine-ffmpeg
-		$(DK) push isobartw/node:$(NODE_TAG)-ffmpeg
-		$(DK) push isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg
-		$(DK) push isobartw/node:$(NODE_TAG)-gm-ffmpeg
-		$(DK) push isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg-pm2
-		$(DK) push isobartw/node:$(NODE_TAG)-gm-ffmpeg-pm2
-		$(DK) push isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg-im
-		$(DK) push isobartw/node:$(NODE_TAG)-gm-ffmpeg-im
-		$(DK) push isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg-im-pm2
-		$(DK) push isobartw/node:$(NODE_TAG)-gm-ffmpeg-im-pm2
+		$(DK) push isobartw/node:$(NODE_TAG)-alpine-ffmpeg            || true
+		$(DK) push isobartw/node:$(NODE_TAG)-ffmpeg                   || true
+		$(DK) push isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg         || true
+		$(DK) push isobartw/node:$(NODE_TAG)-gm-ffmpeg                || true
+		$(DK) push isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg-pm2     || true
+		$(DK) push isobartw/node:$(NODE_TAG)-gm-ffmpeg-pm2            || true
+		$(DK) push isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg-im      || true
+		$(DK) push isobartw/node:$(NODE_TAG)-gm-ffmpeg-im             || true
+		$(DK) push isobartw/node:$(NODE_TAG)-alpine-gm-ffmpeg-im-pm2  || true
+		$(DK) push isobartw/node:$(NODE_TAG)-gm-ffmpeg-im-pm2         || true
 		@echo
 		@echo "Update all tagged images on the gitlab-runner"
 		@echo "docker pull -a isobartw/node"
@@ -199,27 +199,27 @@ isobartw-push:
 isobartw-node-tags:
 		@echo
 		@echo "Create tags for isobartw"
-		$(DK) tag isobar/node:12-alpine 								isobartw/node:12-alpine
-		$(DK) tag isobar/node:12-alpine 								isobartw/node:12
-		$(DK) tag isobar/node:12-alpine 								isobartw/node:lts
-		$(DK) tag isobar/node:12-alpine-pm2 						isobartw/node:12-alpine-pm2
-		$(DK) tag isobar/node:12-alpine-pm2 						isobartw/node:12-pm2
-		$(DK) tag isobar/node:12-alpine-gm 							isobartw/node:12-alpine-gm
-		$(DK) tag isobar/node:12-alpine-gm 							isobartw/node:12-gm
-		$(DK) tag isobar/node:12-alpine-gm-pm2 					isobartw/node:12-alpine-gm-pm2
-		$(DK) tag isobar/node:12-alpine-gm-pm2 					isobartw/node:12-gm-pm2
+		$(DK) tag isobar/node:12-alpine               isobartw/node:12-alpine
+		$(DK) tag isobar/node:12-alpine               isobartw/node:12
+		$(DK) tag isobar/node:12-alpine               isobartw/node:lts
+		$(DK) tag isobar/node:12-alpine-pm2           isobartw/node:12-alpine-pm2
+		$(DK) tag isobar/node:12-alpine-pm2           isobartw/node:12-pm2
+		$(DK) tag isobar/node:12-alpine-gm            isobartw/node:12-alpine-gm
+		$(DK) tag isobar/node:12-alpine-gm            isobartw/node:12-gm
+		$(DK) tag isobar/node:12-alpine-gm-pm2        isobartw/node:12-alpine-gm-pm2
+		$(DK) tag isobar/node:12-alpine-gm-pm2        isobartw/node:12-gm-pm2
 		@echo "Added canvas tags"
-		$(DK) tag isobar/node:12-alpine-gm-canvas				isobartw/node:12-alpine-gm-canvas
-		$(DK) tag isobar/node:12-alpine-gm-canvas-pm2 	isobartw/node:12-alpine-gm-canvas-pm2
-		$(DK) tag isobar/node:12-alpine-gm-canvas				isobartw/node:12-gm-canvas
-		$(DK) tag isobar/node:12-alpine-gm-canvas-pm2 	isobartw/node:12-gm-canvas-pm2
+		$(DK) tag isobar/node:12-alpine-gm-canvas     isobartw/node:12-alpine-gm-canvas
+		$(DK) tag isobar/node:12-alpine-gm-canvas-pm2 isobartw/node:12-alpine-gm-canvas-pm2
+		$(DK) tag isobar/node:12-alpine-gm-canvas     isobartw/node:12-gm-canvas
+		$(DK) tag isobar/node:12-alpine-gm-canvas-pm2 isobartw/node:12-gm-canvas-pm2
 		@echo "Added ffmpeg tags"
-		$(DK) tag isobar/node:12-alpine-ffmpeg					isobartw/node:12-alpine-ffmpeg
-		$(DK) tag isobar/node:12-alpine-ffmpeg					isobartw/node:12-ffmpeg
-		$(DK) tag isobar/node:12-alpine-gm-ffmpeg 			isobartw/node:12-alpine-gm-ffmpeg
-		$(DK) tag isobar/node:12-alpine-gm-ffmpeg 			isobartw/node:12-gm-ffmpeg
-		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-pm2		isobartw/node:12-alpine-gm-ffmpeg-pm2
-		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-pm2		isobartw/node:12-gm-ffmpeg-pm2
+		$(DK) tag isobar/node:12-alpine-ffmpeg        isobartw/node:12-alpine-ffmpeg         || true
+		$(DK) tag isobar/node:12-alpine-ffmpeg        isobartw/node:12-ffmpeg                || true
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg     isobartw/node:12-alpine-gm-ffmpeg      || true
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg     isobartw/node:12-gm-ffmpeg             || true
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-pm2 isobartw/node:12-alpine-gm-ffmpeg-pm2  || true
+		$(DK) tag isobar/node:12-alpine-gm-ffmpeg-pm2 isobartw/node:12-gm-ffmpeg-pm2         || true
 
 isobartw-node-push:
 		@echo
@@ -299,8 +299,8 @@ node-canvas-build:
 
 isobar-node-clean:
 		@echo
-		#echo "Make clean node images"
-		$(DOCKER) rmi node:$(NODE_TAG)-alpine
+		@echo "Make clean node images"
+		$(DOCKER) rmi node:$(NODE_TAG)-alpine || true
 
 isobar-node-build:
 		@echo

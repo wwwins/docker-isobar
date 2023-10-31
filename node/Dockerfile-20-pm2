@@ -1,0 +1,20 @@
+#
+# Copyright 2023 isobar. All Rights Reserved.
+#
+# The isobar node image for deployment
+#
+
+FROM node:20-alpine
+LABEL maintainer "jacky.huang@isobar.com"
+
+WORKDIR /workspace
+
+# install dev tools
+RUN apk --no-cache add curl git openssl subversion && \
+    npm install pm2 -g
+
+COPY ./sh/docker-yarn-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-yarn-entrypoint.sh"]
+
+# Define default command.
+CMD ["pm2-runtime", "start", "pm2.json"]
